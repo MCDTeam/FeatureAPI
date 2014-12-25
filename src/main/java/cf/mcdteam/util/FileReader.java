@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PushbackInputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -19,14 +22,14 @@ public class FileReader
 	/**
 	 * The File being Loaded
 	 */
-	public File file;
+	private File file;
 	
 	/**
 	 * The state of the file
 	 * False - Saved and Unloaded
 	 * True - Unsaved and Loaded
 	 */
-	public boolean state;
+	private boolean state;
 	
 	public HashMap<String, HashMap<String, Object>> filemap;
 	
@@ -34,39 +37,36 @@ public class FileReader
 	{
 		this.file = file;
 		this.state = false;
+		this.filemap = new HashMap<String, HashMap<String, Object>>();
 	}
-	public void load()
+	public Boolean state()
+	{
+		return Boolean.valueOf(state);
+	}
+	public void changestate()
+	{
+		if (state)
+		{
+			save();
+		}
+		else
+		{
+			load();
+		}
+	}
+	public void forceload()
+	{
+		load();
+		System.out.println("Forced Load of File " + file.toString());
+	}
+	
+	private void load()
     {
-        BufferedReader buffer = null;
-        String encoding = null;
-        UnicodeInputStreamReader input = null;
-        try
-        {
-            if (file.getParentFile() != null)
-            {
-                file.getParentFile().mkdirs();
-            }
-
-            if (!file.exists())
-            {
-                // Either a previous load attempt failed or the file is new; clear maps
-            	file.createNewFile();
-            	return;
-            }
-
-            if (file.canRead())
-            {
-				input = new UnicodeInputStreamReader(new FileInputStream(file), encoding);
-                encoding = input.getEncoding();
-                buffer = new BufferedReader(input);
+		try
+		{
+				BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 
                 String line;
-                
-                line = buffer.readLine();
-                if (line == null)
-                {
-                	return;
-                }
                 
                 String org1 = "Pre";
                 String org2 = "Pre";
@@ -74,12 +74,14 @@ public class FileReader
                 ArrayList<String> values = new ArrayList<String>();
                 while (true)
                 {
-                    line = buffer.readLine();
+                	line = buffer.readLine();
                     if (line == null)
                     {
                     	break;
                     }
                     
+                    if (!line.isEmpty())
+                    {
                     switch (line.charAt(0))
                     {
 					case '@': 
@@ -104,31 +106,99 @@ public class FileReader
 
 					case ';': 
 					{
+						HashMap<String,Object> interior;
+						if (filemap.containsKey(org1))
+						{
+							interior = filemap.get(org1);
+						}
+						else
+						{
+							interior = new HashMap<String,Object>();
+						}
 						switch (type.toLowerCase())
 						{
 						case "int":
 						{
-							
+							if (values.isEmpty())
+							{
+								continue;
+							}
+							else if (values.size() == 1)
+							{
+								interior.put(org2, Integer.valueOf(values.get(0)));
+								filemap.put(org1, interior);
+							}
+							else
+							{
+								ArrayList<Integer> list = new ArrayList<Integer>();
+								for (String string:values)
+								{
+									list.add(Integer.valueOf(string));
+								}
+								interior.put(org2, list);
+								filemap.put(org1, interior);
+							}
 						}
 						case "float":
 						{
-							
+							if (values.isEmpty())
+							{
+								continue;
+							}
+							else if (values.size() == 1)
+							{
+								interior.put(org2, Float.valueOf(values.get(0)));
+								filemap.put(org1, interior);
+							}
+							else
+							{
+								ArrayList<Float> list = new ArrayList<Float>();
+								for (String string:values)
+								{
+									list.add(Float.valueOf(string));
+								}
+								interior.put(org2, list);
+								filemap.put(org1, interior);
+							}
 						}
 						case "string":
 						{
-							
+							if (values.isEmpty())
+							{
+								continue;
+							}
+							else if (values.size() == 1)
+							{
+								interior.put(org2, values.get(0));
+								filemap.put(org1, interior);
+							}
+							else
+							{
+								interior.put(org2, values);
+								filemap.put(org1, interior);
+							}
 						}
 						case "boolean":
 						{
-							
-						}
-						case "hash":
-						{
-							
-						}
-						case "itemname":
-						{
-							
+							if (values.isEmpty())
+							{
+								continue;
+							}
+							else if (values.size() == 1)
+							{
+								interior.put(org2, Boolean.parseBoolean(values.get(0)));
+								filemap.put(org1, interior);
+							}
+							else
+							{
+								ArrayList<Boolean> list = new ArrayList<Boolean>();
+								for (String string:values)
+								{
+									list.add(Boolean.parseBoolean(string));
+								}
+								interior.put(org2, list);
+								filemap.put(org1, interior);
+							}
 						}
 						default:
 						{
@@ -136,12 +206,19 @@ public class FileReader
 							{
 								continue;
 							}
-							if (values.size() == 1)
+							else if (values.size() == 1)
 							{
-								
+								interior.put(org2, values.get(0));
+								filemap.put(org1, interior);
+							}
+							else
+							{
+								interior.put(org2, values);
+								filemap.put(org1, interior);
 							}
 						}
 						}
+						values.clear();
 					}
 
 					default: 
@@ -150,29 +227,27 @@ public class FileReader
 					}
 					
                     }
+                    }
                 }
-            }
+                if (buffer != null)
+                {
+                    try
+                    {
+                        buffer.close();
+                    } catch (IOException e){}
+                }
+                state = true;
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
-        finally
-        {
-            if (buffer != null)
-            {
-                try
-                {
-                    buffer.close();
-                } catch (IOException e){}
-            }
-            if (input != null)
-            {
-                try
-                {
-                    input.close();
-                } catch (IOException e){}
-            }
-        }
     }
+	
+	private void save()
+	{
+		
+		filemap = new HashMap<String, HashMap<String, Object>>();
+		state = false;
+	}
 }

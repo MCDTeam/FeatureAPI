@@ -22,7 +22,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 
-@Mod(modid = ModMetadata.MOD_ID, name = ModMetadata.NAME, version = ModMetadata.VERSION)
+/*@Mod(modid = ModMetadata.MOD_ID, name = ModMetadata.NAME, version = ModMetadata.VERSION)
 public class FeatureAPI 
 {
 	public static Logger log = LogManager.getLogger(ModMetadata.MOD_ID);
@@ -73,7 +73,9 @@ public class FeatureAPI
 	public void postInit(FMLPostInitializationEvent event)
 	{
 		log.info("Post-Init Version: " + ModMetadata.VERSION);
-        this._featureRepository.runPostInitialization();
+        /this._featureRepository.runPostInitialization();
 		log.info("Post-Init Finished");
 	}
+
 }
+*/
