@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PushbackInputStream;
 import java.io.Reader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -17,7 +18,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.config.Configuration.UnicodeInputStreamReader;
 
-public class FileReader 
+public class FileReader
 {
 	/**
 	 * The File being Loaded
@@ -25,35 +26,35 @@ public class FileReader
 	private File file;
 	
 	/**
-	 * The state of the file
-	 * False - Saved and Unloaded
-	 * True - Unsaved and Loaded
+	 * The state of the file False - Saved and Unloaded True - Unsaved and Loaded
 	 */
 	private boolean state;
 	
-	public HashMap<String, HashMap<String, Object>> filemap;
+	public HashMap<String, ArrayList> filemap;
 	
 	public FileReader(File file)
 	{
 		this.file = file;
 		this.state = false;
-		this.filemap = new HashMap<String, HashMap<String, Object>>();
+		this.filemap = new HashMap<String, ArrayList>();
 	}
+	
 	public Boolean state()
 	{
 		return Boolean.valueOf(state);
 	}
+	
 	public void changestate()
 	{
 		if (state)
 		{
 			save();
-		}
-		else
+		} else
 		{
 			load();
 		}
 	}
+	
 	public void forceload()
 	{
 		load();
@@ -61,193 +62,109 @@ public class FileReader
 	}
 	
 	private void load()
-    {
+	{
 		try
 		{
-				BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-
-                String line;
-                
-                String org1 = "Pre";
-                String org2 = "Pre";
-                String type = "String[]";
-                ArrayList<String> values = new ArrayList<String>();
-                while (true)
-                {
-                	line = buffer.readLine();
-                    if (line == null)
-                    {
-                    	break;
-                    }
-                    
-                    if (!line.isEmpty())
-                    {
-                    switch (line.charAt(0))
-                    {
-					case '@': 
+			BufferedReader buffer = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+			
+			String line;
+			
+			String org1 = "Pre";
+			String type = "String[]";
+			ArrayList<String> values = new ArrayList<String>();
+			while (true)
+			{
+				line = buffer.readLine();
+				if (line == null)
+				{
+					break;
+				}
+				
+				if (!line.isEmpty())
+				{
+					switch (line.charAt(0))
 					{
-						org1 = line.substring(1);
-					}
-					
-					case '#':
-					{
-						org2 = line.substring(1);
-					}
-					
-					case '$': 
-					{
-						type = line.substring(1);
-					}
-
-					case '=': 
-					{
-						values.add(line.substring(1));
-					}
-
-					case ';': 
-					{
-						HashMap<String,Object> interior;
-						if (filemap.containsKey(org1))
+						case '@':
 						{
-							interior = filemap.get(org1);
+							org1 = line.substring(1);
+							break;
 						}
-						else
+						
+						case '$':
 						{
-							interior = new HashMap<String,Object>();
+							type = line.substring(1);
+							break;
 						}
-						switch (type.toLowerCase())
+						
+						case '=':
 						{
-						case "int":
-						{
-							if (values.isEmpty())
-							{
-								continue;
-							}
-							else if (values.size() == 1)
-							{
-								interior.put(org2, Integer.valueOf(values.get(0)));
-								filemap.put(org1, interior);
-							}
-							else
-							{
-								ArrayList<Integer> list = new ArrayList<Integer>();
-								for (String string:values)
-								{
-									list.add(Integer.valueOf(string));
-								}
-								interior.put(org2, list);
-								filemap.put(org1, interior);
-							}
+							values.add(line.substring(1));
+							break;
 						}
-						case "float":
+						
+						case ';':
 						{
-							if (values.isEmpty())
-							{
-								continue;
-							}
-							else if (values.size() == 1)
-							{
-								interior.put(org2, Float.valueOf(values.get(0)));
-								filemap.put(org1, interior);
-							}
-							else
-							{
-								ArrayList<Float> list = new ArrayList<Float>();
-								for (String string:values)
-								{
-									list.add(Float.valueOf(string));
-								}
-								interior.put(org2, list);
-								filemap.put(org1, interior);
-							}
+							
+							values.clear();
+							break;
 						}
-						case "string":
-						{
-							if (values.isEmpty())
-							{
-								continue;
-							}
-							else if (values.size() == 1)
-							{
-								interior.put(org2, values.get(0));
-								filemap.put(org1, interior);
-							}
-							else
-							{
-								interior.put(org2, values);
-								filemap.put(org1, interior);
-							}
-						}
-						case "boolean":
-						{
-							if (values.isEmpty())
-							{
-								continue;
-							}
-							else if (values.size() == 1)
-							{
-								interior.put(org2, Boolean.parseBoolean(values.get(0)));
-								filemap.put(org1, interior);
-							}
-							else
-							{
-								ArrayList<Boolean> list = new ArrayList<Boolean>();
-								for (String string:values)
-								{
-									list.add(Boolean.parseBoolean(string));
-								}
-								interior.put(org2, list);
-								filemap.put(org1, interior);
-							}
-						}
+						
 						default:
 						{
-							if (values.isEmpty())
-							{
-								continue;
-							}
-							else if (values.size() == 1)
-							{
-								interior.put(org2, values.get(0));
-								filemap.put(org1, interior);
-							}
-							else
-							{
-								interior.put(org2, values);
-								filemap.put(org1, interior);
-							}
+							continue;
 						}
-						}
-						values.clear();
+						
 					}
-
-					default: 
-					{
-						continue;
-					}
-					
-                    }
-                    }
-                }
-                if (buffer != null)
-                {
-                    try
-                    {
-                        buffer.close();
-                    } catch (IOException e){}
-                }
-                state = true;
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
+				}
+			}
+			if (buffer != null)
+			{
+				buffer.close();
+			}
+			state = true;
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
 	private void save()
 	{
-		
+		try
+		{
+			Files.deleteIfExists(file.toPath());
+			
+		}
+		catch (IOException e)
+		{
+			
+		}
 		filemap = new HashMap<String, HashMap<String, Object>>();
 		state = false;
+	}
+	
+	public class Data
+	{
+		public String data = "null";
+		public String type = "String";
+		public ArrayList<String> values = new ArrayList<String>();
+		public Data (String data, ArrayList<String> values, String type)
+		{
+			this.values = values;
+			this.type = type;
+			this.data = data;
+		}
+	}
+	public class Command
+	{
+		public String command = "null";
+		public ArrayList<String> arguments = new ArrayList<String>();
+		public ArrayList<String> type = new ArrayList<String>();
+		public Command (String command,ArrayList<String> arguments, ArrayList<String> type)
+		{
+			this.arguments = arguments;
+			this.type = type;
+			this.command = command;
+		}
 	}
 }

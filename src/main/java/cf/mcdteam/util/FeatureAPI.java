@@ -1,6 +1,7 @@
 package cf.mcdteam.util;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
@@ -8,6 +9,7 @@ import net.minecraftforge.common.config.Configuration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 
 
 
@@ -42,7 +44,7 @@ public class FeatureAPI
 		log.info("Pre-Init Version: " + ModMetadata.VERSION);
 		FileReader reader = new FileReader(new File(event.getModConfigurationDirectory().getPath().concat(File.separator).concat("DumbConfig.txt")));
 		reader.changestate();
-		log.info(reader.filemap.get("Sillyness").get(key));
+		log.info(reader.filemap.toString());
 		log.info("Pre-Init Finished");
 	}
 }
