@@ -15,7 +15,7 @@ import cf.mcdteam.featureAPI.Feature.FeatureData.Data;
 import cf.mcdteam.featureAPI.Feature.FeatureElement;
 import cf.mcdteam.featureAPI.Feature.FeatureElement.Element;
 import cf.mcdteam.featureAPI.configuration.FeatureConfigurationProvider;
-import cf.mcdteam.featureAPI.logging.FeatureLogger;
+import cf.mcdteam.featureAPI.logging.LoggerProvider;
 import cf.mcdteam.featureAPI.logging.ILogger;
 import cf.mcdteam.featureAPI.logging.SubSystemLogger;
 import cf.mcdteam.featureAPI.object.FeatureObjectRegister;
@@ -61,7 +61,7 @@ public class FeatureRepository {
     				FeatureData data = feild.getAnnotation(Feature.FeatureData.class);
     				if (data.value() == Data.LOGGER)
     				{
-    					feild.set(feature, FeatureLogger.getLoggerForFeature(feature));
+    					feild.set(feature, LoggerProvider.getLoggerForFeature(feature));
     					continue;
     				}
     			}

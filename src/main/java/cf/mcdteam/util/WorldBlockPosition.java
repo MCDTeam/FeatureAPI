@@ -1,103 +1,68 @@
 package cf.mcdteam.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
- *
+ * This adds world functions to the BlockPos function of Minecraft
+ * Finished BCWADSWORTH on 12/28/14
  */
-public class WorldBlockPosition extends BlockPosition {
-
-    private World _world;
-
-    public World getWorld(){
-        return this._world;
-    }
-
-    public WorldBlockPosition(World world, int x, int y, int z){
-        super(x, y, z);
-        this._world = world;
-    }
-
-    public WorldBlockPosition(World world, BlockPosition position){
-        super(position.getX(), position.getY(), position.getZ());
-        this._world = world;
-    }
-
-    public WorldBlockPosition createWorldBlockPosition(BlockPosition position){
-        return new WorldBlockPosition(this._world, position);
-    }
-
-    /*
-    *   BlockPosition Adapter
-    */
-
-    @Override
-    public WorldBlockPosition direction(ForgeDirection direction) {
-        return this.createWorldBlockPosition(super.direction(direction));
-    }
-
-    @Override
-    public WorldBlockPosition direction(ForgeDirection direction, int count){
-        return this.createWorldBlockPosition(super.direction(direction, count));
-    }
-
-    @Override
-    public WorldBlockPosition top(){
-        return this.createWorldBlockPosition(super.top());
-    }
-
-    @Override
-    public WorldBlockPosition bottom(){
-        return this.createWorldBlockPosition(super.bottom());
-    }
-
-    @Override
-    public WorldBlockPosition north(){
-        return this.createWorldBlockPosition(super.north());
-    }
-
-    @Override
-    public WorldBlockPosition west(){
-        return this.createWorldBlockPosition(super.west());
-    }
-
-    @Override
-    public WorldBlockPosition south(){
-        return this.createWorldBlockPosition(super.south());
-    }
-
-    @Override
-    public WorldBlockPosition east(){
-        return this.createWorldBlockPosition(super.east());
-    }
-
-    public WorldBlockPosition topWorldBlock(int x, int z){
-        return this.createWorldBlockPosition(super.topWorldBlock(this._world, x, z));
-    }
-
-    public WorldBlockPosition topTerrainBlock(int x, int z){
-        return this.createWorldBlockPosition(super.topTerrainBlock(this._world, x, z));
-    }
-
-    public Block getBlock(){
-        return super.getBlock(this._world);
-    }
-
-    public boolean setBlock(Block block){
-        return super.setBlock(this._world, block);
-    }
-
-    public boolean setBlock(Block block, int meta){
-        return super.setBlock(this._world, block, meta);
-    }
-
-    public boolean isAir() {
-        return super.isAir(this._world);
-    }
-
-    public boolean is(Block block) {
-        return super.is(this._world, block);
-    }
+public class WorldBlockPosition extends BlockPos
+{
+	
+	private World world;
+	
+	public World getWorld()
+	{
+		return this.world;
+	}
+	
+	public WorldBlockPosition(World world, int x, int y, int z)
+	{
+		super(x, y, z);
+		this.world = world;
+	}
+	
+	public WorldBlockPosition(World world, BlockPos position)
+	{
+		super(position.getX(), position.getY(), position.getZ());
+		this.world = world;
+	}
+	
+	public Block getBlock()
+	{
+		return world.getBlockState(this).getBlock();
+	}
+	
+	public IBlockState getState()
+	{
+		return world.getBlockState(this);
+	}
+	
+	public void setBlock(IBlockState state)
+	{
+		world.setBlockState(this, state);
+	}
+	
+	public void setAir()
+	{
+		world.setBlockToAir(this);
+	}
+	
+	public boolean isAir()
+	{
+		return world.isAirBlock(this);
+	}
+	
+	public boolean is(Block block)
+	{
+		return world.getBlockState(this).getBlock() == block;
+	}
+	
+	public static WorldBlockPosition topBlock(World world, int x, int z)
+	{
+		return new WorldBlockPosition(world, world.getTopSolidOrLiquidBlock(new BlockPos(x, 1, 0)));
+	}
 }

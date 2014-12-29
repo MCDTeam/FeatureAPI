@@ -14,6 +14,14 @@ public @interface Configurable
 	public @interface Excecutable
 	{
 		String value = "null";
+		Boolean allowPerWorld = true;
+	}
+	
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.METHOD)
+	public @interface ClassGlobalReset
+	{
+		
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)

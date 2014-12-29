@@ -1,9 +1,8 @@
 package cf.mcdteam.featureAPI.object;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
-import teamUnknown.immersion.Immersion;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,13 +10,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public abstract class FeatureObjectRegister {
-    private final HashMap<String, ImmersionBlock> blocks;
-    private final HashMap<String, ImmersionItem> items;
+    private final HashMap<String, FeatureBlock> blocks;
+    private final HashMap<String, FeatureItem> items;
 
     public FeatureObjectRegister()
     {
-        blocks = new HashMap<String, ImmersionBlock>();
-        items = new HashMap<String, ImmersionItem>();
+        blocks = new HashMap<String, FeatureBlock>();
+        items = new HashMap<String, FeatureItem>();
         startRegistry();
     }
 
@@ -30,7 +29,7 @@ public abstract class FeatureObjectRegister {
      * Adds a block to the registry
      * @param block
      */
-    public void register(ImmersionBlock block)
+    public void register(FeatureBlock block)
     {
     	blocks.put(block.getUnlocalizedName().substring(15), block);
     }
@@ -39,7 +38,7 @@ public abstract class FeatureObjectRegister {
      * Adds a item to the registry
      * @param item
      */
-    public void register(ImmersionItem item)
+    public void register(FeatureItem item)
     {
         items.put(item.getUnlocalizedName().substring(5), item);
     }
@@ -49,14 +48,14 @@ public abstract class FeatureObjectRegister {
      */
     public void registerToGame()
     {
-        for(Entry<String, ImmersionBlock> entry : blocks.entrySet()){
+        for(Entry<String, FeatureBlock> entry : blocks.entrySet()){
             String name = entry.getKey();
             Block block = entry.getValue();
 
             GameRegistry.registerBlock(block, name);
         }
 
-        for(Entry<String, ImmersionItem> entry : items.entrySet())
+        for(Entry<String, FeatureItem> entry : items.entrySet())
         {
             String name = entry.getKey();
             Item item = entry.getValue();
@@ -67,11 +66,11 @@ public abstract class FeatureObjectRegister {
     
     public void registerCrafting()
     {
-    	for (ImmersionBlock block : blocks.values())
+    	for (FeatureBlock block : blocks.values())
     	{
     		block.craftingRegistration();
     	}
-    	for (ImmersionItem item : items.values())
+    	for (FeatureItem item : items.values())
     	{
     		item.craftingRegistration();
     	}
@@ -79,11 +78,11 @@ public abstract class FeatureObjectRegister {
     
     public void registerForgeOreDict()
     {
-    	for (ImmersionBlock block : blocks.values())
+    	for (FeatureBlock block : blocks.values())
     	{
     		block.forgeOreDict();
     	}
-    	for (ImmersionItem item : items.values())
+    	for (FeatureItem item : items.values())
     	{
     		item.forgeOreDict();
     	}
@@ -93,7 +92,7 @@ public abstract class FeatureObjectRegister {
      * Looks through both registers for an object. Searches blocks first, then items.
      * 
      * @param name The unwrapped name of an object
-     * @return Returns the found object. Type is ImmersionBlock for a block object, ImmersionItem for an item object, or null if not found
+     * @return Returns the found object. Type is FeatureBlock for a block object, FeatureItem for an item object, or null if not found
      */
     public <T> T readObject(String name)
     {
@@ -116,7 +115,7 @@ public abstract class FeatureObjectRegister {
      * @param name The unwrapped name of an object
      * @return Returns the found object. Returns null if not found
      */
-    public ImmersionBlock readBlock(String name)
+    public FeatureBlock readBlock(String name)
     {
     	if (blocks.containsKey(name))
     	{
@@ -132,7 +131,7 @@ public abstract class FeatureObjectRegister {
      * @param name The unwrapped name of an object
      * @return Returns the found object. Returns null if not found
      */
-    public ImmersionItem readItem(String name)
+    public FeatureItem readItem(String name)
     {
     	if (items.containsKey(name))
     	{

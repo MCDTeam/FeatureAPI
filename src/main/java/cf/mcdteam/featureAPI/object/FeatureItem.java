@@ -2,12 +2,10 @@ package cf.mcdteam.featureAPI.object;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import teamUnknown.immersion.core.ImmersionCreativeTab;
-import teamUnknown.immersion.core.providers.resources.ResourceProvider;
 
-public class ImmersionItem extends Item implements IImersionObject
+public class FeatureItem extends Item implements IFeatureObject
 {
-    public ImmersionItem(String name) {
+    public FeatureItem(String name) {
 
         if (name == null)
             name = this.inferName();
@@ -16,8 +14,7 @@ public class ImmersionItem extends Item implements IImersionObject
         this.setTextureName(ResourceProvider.getTextureName(name));
 
         // Override if needed
-        this.setCreativeTab(ImmersionCreativeTab.tabGeneral);
-        //this.setCreativeTab(CreativeTabs.tabMisc);
+        this.setCreativeTab(CreativeTabs.tabMisc);
     }
 
     private String inferName() {

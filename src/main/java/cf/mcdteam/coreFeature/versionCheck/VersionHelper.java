@@ -1,15 +1,15 @@
 package cf.mcdteam.coreFeature.versionCheck;
 
-import cpw.mods.fml.common.Loader;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-import teamUnknown.immersion.Immersion;
-import teamUnknown.immersion.core.meta.ModMetadata;
-import teamUnknown.immersion.core.meta.Strings;
-
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
+
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.fml.common.Loader;
+import cf.mcdteam.featureAPI.ModMetadata;
+
+import com.google.common.base.Strings;
 
 public class VersionHelper implements Runnable{
 

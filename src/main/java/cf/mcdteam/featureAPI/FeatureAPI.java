@@ -1,28 +1,22 @@
 package cf.mcdteam.featureAPI;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
-
-
-import cf.mcdteam.coreFeature.command.CommandHandler;
-import cf.mcdteam.featureAPI.proxy.IProxy;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-
-
-/*@Mod(modid = ModMetadata.MOD_ID, name = ModMetadata.NAME, version = ModMetadata.VERSION)
+@Mod(modid = ModMetadata.MOD_ID, name = ModMetadata.NAME, version = ModMetadata.VERSION)
 public class FeatureAPI 
 {
 	public static Logger log = LogManager.getLogger(ModMetadata.MOD_ID);
@@ -30,9 +24,6 @@ public class FeatureAPI
 	@Instance(ModMetadata.MOD_ID)
 	public static FeatureAPI instance;
     private final FeatureRepository _featureRepository;
-
-    @SidedProxy(clientSide = ModMetadata.CLIENT_PROXY_CLASS, serverSide = ModMetadata.SERVER_PROXY_CLASS)
-    public static IProxy proxy;
 
     public FeatureAPI()
     {
@@ -47,7 +38,8 @@ public class FeatureAPI
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
-	{	
+	{
+		FMLCommonHandler.instance().getSide();
 		log.info("Pre-Init Version: " + ModMetadata.VERSION);
 		ModMetadata.CONF_DIR = event.getModConfigurationDirectory();
         
@@ -78,4 +70,3 @@ public class FeatureAPI
 	}
 
 }
-*/

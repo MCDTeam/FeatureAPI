@@ -11,10 +11,9 @@ public class NBTHelper {
      * @param itemStack The ItemStack for which its NBT Tag Compound is being checked
      *                  for initialization
      */
-    private static void initNBTTagCompound(ItemStack itemStack) {
-        if (itemStack.stackTagCompound == null) {
-            itemStack.setTagCompound(new NBTTagCompound());
-        }
+    private static void initNBTTagCompound(ItemStack itemStack) 
+    {
+    	itemStack.hasTagCompound() ? true : itemStack.setTagCompound(new NBTTagCompound());
     }
 
     public static boolean hasTag(ItemStack itemStack, String keyName) {

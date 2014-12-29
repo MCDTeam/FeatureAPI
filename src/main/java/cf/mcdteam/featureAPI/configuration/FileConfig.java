@@ -1,4 +1,4 @@
-package cf.mcdteam.util;
+package cf.mcdteam.featureAPI.configuration;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,7 +18,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.config.Configuration.UnicodeInputStreamReader;
 
-public class FileReader
+public class FileConfig
 {
 	/**
 	 * The File being Loaded
@@ -32,7 +32,7 @@ public class FileReader
 	
 	public HashMap<String, ArrayList> filemap;
 	
-	public FileReader(File file)
+	public FileConfig(File file)
 	{
 		this.file = file;
 		this.state = false;
