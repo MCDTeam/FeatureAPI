@@ -9,10 +9,7 @@ public class FeatureItem extends Item implements IFeatureObject
 
         if (name == null)
             name = this.inferName();
-
-        this.setUnlocalizedName(ResourceProvider.getBlockName(name));
-        this.setTextureName(ResourceProvider.getTextureName(name));
-
+        this.setUnlocalizedName(name);
         // Override if needed
         this.setCreativeTab(CreativeTabs.tabMisc);
     }

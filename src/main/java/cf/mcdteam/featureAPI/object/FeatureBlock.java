@@ -1,11 +1,8 @@
 package cf.mcdteam.featureAPI.object;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import teamUnknown.immersion.core.ImmersionCreativeTab;
-import teamUnknown.immersion.core.providers.resources.ResourceProvider;
 
 /**
  * Reminder: You must register your block with your own ObjectRegister to have it
@@ -32,10 +29,8 @@ public class FeatureBlock extends Block implements IFeatureObject
 
         if (name == null)
             name = this.inferName();
-
-        this.setBlockName(ResourceProvider.getBlockName(name));
-        this.setBlockTextureName(ResourceProvider.getTextureName(name));
-
+        
+        this.setUnlocalizedName(name);
         //Sets a basic creative tab so that it is accessible. Calling this in the constructor overrides this
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
