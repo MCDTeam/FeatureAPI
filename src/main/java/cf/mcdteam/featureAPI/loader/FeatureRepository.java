@@ -1,4 +1,4 @@
-package cf.mcdteam.featureAPI;
+package cf.mcdteam.featureAPI.loader;
 
 import net.minecraftforge.common.config.Configuration;
 
@@ -10,16 +10,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import cf.mcdteam.featureAPI.Feature.FeatureData;
-import cf.mcdteam.featureAPI.Feature.FeatureData.Data;
-import cf.mcdteam.featureAPI.Feature.FeatureElement;
-import cf.mcdteam.featureAPI.Feature.FeatureElement.Element;
+import cf.mcdteam.featureAPI.FeatureAPI;
 import cf.mcdteam.featureAPI.configuration.FeatureConfigurationProvider;
+import cf.mcdteam.featureAPI.loader.Feature.FeatureData;
+import cf.mcdteam.featureAPI.loader.Feature.FeatureElement;
+import cf.mcdteam.featureAPI.loader.Feature.FeatureData.Data;
+import cf.mcdteam.featureAPI.loader.Feature.FeatureElement.Element;
 import cf.mcdteam.featureAPI.logging.LoggerProvider;
 import cf.mcdteam.featureAPI.logging.ILogger;
 import cf.mcdteam.featureAPI.logging.SubSystemLogger;
 import cf.mcdteam.featureAPI.object.FeatureObjectRegister;
-import cf.mcdteam.featureAPI.IFeature;
 
 /**
  *  Feature Repository is used for registering, storing and retrieving of features, with automated initialization delegation

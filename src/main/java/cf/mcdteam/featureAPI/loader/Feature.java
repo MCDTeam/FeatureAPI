@@ -1,4 +1,4 @@
-package cf.mcdteam.featureAPI;
+package cf.mcdteam.featureAPI.loader;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

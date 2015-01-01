@@ -31,8 +31,6 @@ public class FeatureBlock extends Block implements IFeatureObject
             name = this.inferName();
         
         this.setUnlocalizedName(name);
-        //Sets a basic creative tab so that it is accessible. Calling this in the constructor overrides this
-        this.setCreativeTab(CreativeTabs.tabBlock);
     }
 
     private String inferName() 
