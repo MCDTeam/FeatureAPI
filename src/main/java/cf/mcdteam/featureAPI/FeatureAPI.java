@@ -1,5 +1,7 @@
 package cf.mcdteam.featureAPI;
 
+import java.io.File;
+
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import cf.mcdteam.featureAPI.loader.FeatureRepository;
+import cf.mcdteam.featureAPI.configuration.FileConfig;
 
 
 @Mod(modid = ModMetadata.MOD_ID, name = ModMetadata.NAME, version = ModMetadata.VERSION)
@@ -29,13 +31,11 @@ public class FeatureAPI
 	
 	@Instance(ModMetadata.MOD_ID)
 	public static FeatureAPI instance;
-    
-	private FeatureRepository featureRepository;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		featureRepository = new FeatureRepository();
+		
 	}
 	
 	@EventHandler

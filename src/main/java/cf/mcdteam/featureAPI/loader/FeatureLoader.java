@@ -10,28 +10,28 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import cf.mcdteam.featureAPI.FeatureAPI;
 import cf.mcdteam.featureAPI.configuration.FeatureConfigurationProvider;
 import cf.mcdteam.featureAPI.loader.Feature.FeatureData;
 import cf.mcdteam.featureAPI.loader.Feature.FeatureElement;
 import cf.mcdteam.featureAPI.loader.Feature.FeatureData.Data;
 import cf.mcdteam.featureAPI.loader.Feature.FeatureElement.Element;
-import cf.mcdteam.featureAPI.logging.LoggerProvider;
-import cf.mcdteam.featureAPI.logging.ILogger;
-import cf.mcdteam.featureAPI.logging.SubSystemLogger;
 import cf.mcdteam.featureAPI.object.FeatureObjectRegister;
 
 /**
  *  Feature Repository is used for registering, storing and retrieving of features, with automated initialization delegation
  */
-public class FeatureRepository {
-    private final SubSystemLogger _logger;
+public class FeatureLoader {
+    private final Logger _logger;
     private HashMap<String, IFeature> _features;
     private HashMap<IFeature, FeatureObjectRegister> _featureObjectRegisters;
 
-    public FeatureRepository(){
+    public FeatureLoader(){
         this._features = new HashMap<String, IFeature>();
-        this._logger = SubSystemLogger.getLoggerForSubsystem(this.getClass());
+        this._logger = LogManager.getLogger("FeatureAPI] [Feature Loader");
         this._featureObjectRegisters = new HashMap<IFeature, FeatureObjectRegister>();
     }
 
