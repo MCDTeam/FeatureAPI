@@ -25,11 +25,12 @@ import cf.mcdteam.featureAPI.object.FeatureObjectRegister;
  *  Feature Repository is used for registering, storing and retrieving of features, with automated initialization delegation
  */
 public class FeatureLoader {
+	public FeatureLoader INSTANCE = new FeatureLoader();
     private final Logger _logger;
     private HashMap<String, IFeature> _features;
     private HashMap<IFeature, FeatureObjectRegister> _featureObjectRegisters;
 
-    public FeatureLoader(){
+    private FeatureLoader(){
         this._features = new HashMap<String, IFeature>();
         this._logger = LogManager.getLogger("FeatureAPI] [Feature Loader");
         this._featureObjectRegisters = new HashMap<IFeature, FeatureObjectRegister>();
